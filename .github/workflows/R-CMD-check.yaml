@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+# R implementation
+
       - uses: r-lib/actions/setup-r@v1
         with:
              r-version: release
@@ -34,14 +36,16 @@ jobs:
         shell: Rscript {0}
       - name: Run examples
         run: Rscript scripts/examples.R
-      - name: Remove registry
+      - name: Remove registry and store files
         run: |
-             .fair/registry/scripts/stop_fair_registry
-             mkdir ./compare_db
-             mv ./temp_registry/.fair/registry/db.sqlite3 ./compare_db/R.sqlite3
-             mkdir ./working_configs
-             mv .temp_registry/test/datastore/coderun ./working_configs
-             rm ./temp_registry/
+             /Users/runner/.fair/registry/scripts/stop_fair_registry
+             mkdir /Users/runner/compare_db
+             mv /Users/runner/.fair/registry/db.sqlite3 /Users/runner/compare_db/R.sqlite3
+             mkdir /Users/runner/working_configs
+             mv ./Users/runner/test/datastore/coderun /Users/runner/working_configs
+             rm /Users/runner/.fair/
+
+# Julia implementation
 
       - uses: julia-actions/setup-julia@v1
         with:
