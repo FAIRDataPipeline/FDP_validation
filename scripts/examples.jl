@@ -7,7 +7,7 @@ import CSV
 import DataFrames
 import Random
 
-parent_dir = "coderun/"
+parent_dir = "/Users/runner/coderun/"
 dirs = filter(x -> isdir(joinpath(parent_dir, x)), readdir(parent_dir, join = true))
 
 ## 1. Empty code run
