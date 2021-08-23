@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+name: R-CMD-check
+
+jobs:
+  R-CMD-check:
+    runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@v1
+        with:
+             r-version: release
+      - name: Install local registry
+        run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
+      - name: Install system requirements (macOS-latest)
+        if: matrix.config.os == 'macos-latest'
+        run : |
+               rm '/usr/local/bin/gfortran'
+               brew install hdf5
+               brew install gdal
+      - name: Install R API Implementation
+        run: |
+             install.packages("remotes")
+             remotes::install_github("FAIRDataPipeline/rFDP")
+        shell: Rscript {0}
+      - name: Run examples
+        run: Rscript scripts/examples.R
