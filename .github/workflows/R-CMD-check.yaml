@@ -16,7 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install R
       - uses: r-lib/actions/setup-r@v1
         with:
              r-version: release
@@ -43,3 +42,13 @@ jobs:
              mkdir ./working_configs
              mv .temp_registry/test/datastore/coderun ./working_configs
              rm ./temp_registry/
+
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: 1.6.2
+      - name: Install local registry
+        run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
+      - name: Install Julia API Implementation
+        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Populate Registry
+        run: HOME=./temp_registry julia --project=scripts/ scripts/examples.jl
