@@ -1,4 +1,4 @@
-
+import Pkg; Pkg.add("DataRegistryUtils")
 import DataRegistryUtils
 import CSV
 import DataFrames
