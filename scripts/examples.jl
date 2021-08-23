@@ -1,4 +1,7 @@
 import Pkg; Pkg.add("DataRegistryUtils")
+Pkg.add("CSV")
+Pkg.add("DataFrames")
+Pkg.add("Random")
 import DataRegistryUtils
 import CSV
 import DataFrames
