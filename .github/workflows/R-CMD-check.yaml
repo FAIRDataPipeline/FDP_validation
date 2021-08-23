@@ -70,7 +70,7 @@ jobs:
       - name: Start registry
         run: /Users/runner/.fair/registry/scripts/start_fair_registry
       - name: Run examples
-        run: HOME=./temp_registry julia --project=scripts/ scripts/examples.jl
+        run: julia scripts/examples.jl
       - name: Stop registry
         run: /Users/runner/.fair/registry/scripts/stop_fair_registry
       - name: Archive sqlite3 db
