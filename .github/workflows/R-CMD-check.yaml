@@ -9,7 +9,7 @@ on:
 name: R-CMD-check
 
 jobs:
-  R-implementation:
+  R-API:
     name: R imlementation
     runs-on: macOS-latest
     env:
@@ -48,13 +48,17 @@ jobs:
           name: working-configs
           path: ${{ github.workspace }}/test/datastore/coderun/
 
-  Julia-implementation:
+  Julia-API:
     name: Julia implementation
+    needs: R-API
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2 # checkout repo into $GITHUB_WORKSPACE
+      - uses: r-lib/actions/setup-r@v1
+        with:
+             r-version: release
 
       - uses: julia-actions/setup-julia@v1
         with:
@@ -63,6 +67,8 @@ jobs:
         run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
       - name: Install Julia API Implementation
         run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Start registry
+        run: /Users/runner/.fair/registry/scripts/start_fair_registry
       - name: Run examples
         run: HOME=./temp_registry julia --project=scripts/ scripts/examples.jl
       - name: Stop registry
@@ -72,3 +78,18 @@ jobs:
         with:
           name: julia-sqlite3-db
           path: /Users/runner/.fair/registry/db.sqlite3
+      - name: Download R-sqlite3-db
+        uses: actions/download-artifact@v2
+        with:
+          name: R-sqlite3-db
+      - name: Compare databases
+        run: Rscript test_SQLite_db.R
+
+
+
+
+
+
+
+
+
