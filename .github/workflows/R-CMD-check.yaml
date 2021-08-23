@@ -43,7 +43,7 @@ jobs:
              mv /Users/runner/.fair/registry/db.sqlite3 /Users/runner/compare_db/R.sqlite3
              mkdir /Users/runner/working_configs
              mkdir /Users/runner/working_configs/coderun
-             mv ./Users/runner/test/datastore/coderun /Users/runner/working_configs
+             mv /Users/runner/test/datastore/coderun /Users/runner/working_configs
              rm /Users/runner/.fair/
 
 # Julia implementation
