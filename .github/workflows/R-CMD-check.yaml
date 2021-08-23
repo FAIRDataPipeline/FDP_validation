@@ -14,7 +14,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2 # checkout repo into $GITHUB_WORKSPACE
 
 # R implementation
 
@@ -37,23 +37,14 @@ jobs:
       - name: Run examples
         run: Rscript scripts/examples.R
       - name: Remove registry and store files
-        run: |
-             /Users/runner/.fair/registry/scripts/stop_fair_registry
-             mkdir /Users/runner/compare_db
-             mv /Users/runner/.fair/registry/db.sqlite3 /Users/runner/compare_db/R.sqlite3
-             mkdir /Users/runner/working_configs
-             mkdir /Users/runner/working_configs/coderun
-             mv /Users/runner/test/datastore/coderun /Users/runner/working_configs
-             rm /Users/runner/.fair/
-
-# Julia implementation
-
-      - uses: julia-actions/setup-julia@v1
+        run: /Users/runner/.fair/registry/scripts/stop_fair_registry
+      - name: Archive sqlite3 db
+        uses: actions/upload-artifact@v2
         with:
-          version: 1.6.2
-      - name: Install local registry
-        run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
-      - name: Install Julia API Implementation
-        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
-      - name: Populate Registry
-        run: HOME=./temp_registry julia --project=scripts/ scripts/examples.jl
+          name: sqlite3-db
+          path: /Users/runner/.fair/registry/db.sqlite3
+      - name: Archive working configs
+        uses: actions/upload-artifact@v2
+        with:
+          name: working-configs
+          path: ${GITHUB_WORKSPACE}/test/datastore/coderun
