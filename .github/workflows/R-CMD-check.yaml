@@ -9,14 +9,13 @@ on:
 name: R-CMD-check
 
 jobs:
-  R-CMD-check:
+  R-implementation:
+    name: R imlementation
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2 # checkout repo into $GITHUB_WORKSPACE
-
-# R implementation
 
       - uses: r-lib/actions/setup-r@v1
         with:
@@ -36,15 +35,40 @@ jobs:
         shell: Rscript {0}
       - name: Run examples
         run: Rscript scripts/examples.R
-      - name: Remove registry and store files
+      - name: Stop registry
         run: /Users/runner/.fair/registry/scripts/stop_fair_registry
       - name: Archive sqlite3 db
         uses: actions/upload-artifact@v2
         with:
-          name: sqlite3-db
+          name: R-sqlite3-db
           path: /Users/runner/.fair/registry/db.sqlite3
       - name: Archive working configs
         uses: actions/upload-artifact@v2
         with:
           name: working-configs
           path: ${{ github.workspace }}/test/datastore/coderun/
+
+  Julia-implementation:
+    name: Julia implementation
+    runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2 # checkout repo into $GITHUB_WORKSPACE
+
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: 1.6.2
+      - name: Install local registry
+        run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
+      - name: Install Julia API Implementation
+        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Run examples
+        run: HOME=./temp_registry julia --project=scripts/ scripts/examples.jl
+      - name: Stop registry
+        run: /Users/runner/.fair/registry/scripts/stop_fair_registry
+      - name: Archive sqlite3 db
+        uses: actions/upload-artifact@v2
+        with:
+          name: julia-sqlite3-db
+          path: /Users/runner/.fair/registry/db.sqlite3
