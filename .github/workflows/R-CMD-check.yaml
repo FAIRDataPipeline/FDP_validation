@@ -69,6 +69,10 @@ jobs:
         run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(url="https://github.com/FAIRDataPipeline/DataRegistryUtils.jl"); Pkg.instantiate()'
       - name: Start registry
         run: /Users/runner/.fair/registry/scripts/start_fair_registry
+      - name: Download working configs
+        uses: actions/download-artifact@v2
+        with:
+          name: working-configs
       - name: Run examples
         run: julia scripts/examples.jl
       - name: Stop registry
