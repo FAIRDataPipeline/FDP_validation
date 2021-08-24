@@ -10,6 +10,8 @@ import Random
 parent_dir = "working-configs"
 dirs = filter(x -> isdir(joinpath(parent_dir, x)), readdir(parent_dir, join = true))
 
+println(dirs)
+
 ## 1. Empty code run
 wc = readdir(dirs[1], join = true)[2]
 handle = DataRegistryUtils.initialise(wc)
