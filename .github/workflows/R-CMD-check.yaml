@@ -60,15 +60,15 @@ jobs:
         with:
              r-version: release
 
-#      - uses: julia-actions/setup-julia@v1
-#        with:
-#          version: 1.6.2
-#      - name: Install local registry
-#        run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
-#      - name: Install Julia API Implementation
-#        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(url="https://github.com/FAIRDataPipeline/DataRegistryUtils.jl"); Pkg.instantiate()'
-#      - name: Start registry
-#        run: /Users/runner/.fair/registry/scripts/start_fair_registry
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: 1.6.2
+      - name: Install local registry
+        run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
+      - name: Install Julia API Implementation
+        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(url="https://github.com/FAIRDataPipeline/DataRegistryUtils.jl"); Pkg.instantiate()'
+      - name: Start registry
+        run: /Users/runner/.fair/registry/scripts/start_fair_registry
       - name: Download working configs
         uses: actions/download-artifact@v2
         with:
@@ -97,12 +97,3 @@ jobs:
           name: R-sqlite3-db
       - name: Compare databases
         run: Rscript test_SQLite_db.R
-
-
-
-
-
-
-
-
-
