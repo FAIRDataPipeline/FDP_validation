@@ -8,7 +8,7 @@ import DataFrames
 import Random
 
 parent_dir = "working-configs"
-dirs = filter(x -> isdir(joinpath(parent_dir, x)), readdir(parent_dir, join = true))
+dirs = readdir(parent_dir, join = true)
 
 println(dirs)
 
