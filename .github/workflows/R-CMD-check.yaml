@@ -74,7 +74,7 @@ jobs:
         with:
           name: working-configs
           path: ${{ github.workspace }}/working-configs
-      - Where are the configs???
+      - name: Where are the configs???
         run: |
              ls ${{ github.workspace }}
              ls /Users/runner/
