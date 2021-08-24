@@ -7,7 +7,7 @@ import CSV
 import DataFrames
 import Random
 
-parent_dir = "working-configs/"
+parent_dir = "/Users/runner/work/FDP_validation/FDP_validation/working-configs/"
 dirs = filter(x -> isdir(joinpath(parent_dir, x)), readdir(parent_dir, join = true))
 
 ## 1. Empty code run
