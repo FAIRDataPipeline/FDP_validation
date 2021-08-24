@@ -76,8 +76,11 @@ jobs:
           path: ${{ github.workspace }}/working-configs
       - name: Where are the configs???
         run: |
+             echo "workspace"
              ls ${{ github.workspace }}
+             echo "runner"
              ls /Users/runner/
+             echo "working-configs"
              ls working-configs
       - name: Run examples
         run: julia scripts/examples.jl
