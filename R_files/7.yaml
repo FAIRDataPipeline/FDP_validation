@@ -1,0 +1,16 @@
+run_metadata:
+  description: Nice description
+  local_data_registry_url: http://localhost:8000/api/
+  remote_data_registry_url: https://data.scrc.uk/api/
+  default_input_namespace: username
+  default_output_namespace: username
+  write_data_store: test/datastore/
+  local_repo: local_repo
+  script: ''
+  latest_commit: bf19e409451a70857ce107286898990f2c14e11d
+  remote_repo: https://github.com/fake_org/fake_repo/
+read:
+- data_product: test/estimate/asymptomatic-period
+  use:
+    version: 0.0.1
+write: []
