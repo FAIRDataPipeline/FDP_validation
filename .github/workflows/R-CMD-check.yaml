@@ -33,6 +33,8 @@ jobs:
              install.packages("remotes")
              remotes::install_github("FAIRDataPipeline/rFDP")
         shell: Rscript {0}
+      - name: Start registry
+        run: /Users/runner/.fair/registry/scripts/start_fair_registry
       - name: Run examples
         run: Rscript scripts/examples.R
       - name: Stop registry
