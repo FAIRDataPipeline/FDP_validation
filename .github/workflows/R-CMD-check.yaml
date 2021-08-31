@@ -68,7 +68,7 @@ jobs:
       - name: Install local registry
         run: /bin/bash -c "$(curl -fsSL https://data.scrc.uk/static/localregistry.sh)"
       - name: Install Julia API Implementation
-        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(url="https://github.com/FAIRDataPipeline/DataRegistryUtils.jl"); Pkg.instantiate()'
+        run: julia --project=test/ -e 'using Pkg; Pkg.add("SQLite"); Pkg.add("DataFrames"); Pkg.develop(url="https://github.com/FAIRDataPipeline/DataPipeline.jl"); Pkg.instantiate()'
       - name: Start registry
         run: /Users/runner/.fair/registry/scripts/start_fair_registry
       - name: Download working configs
